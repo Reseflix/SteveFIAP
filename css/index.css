@@ -1,0 +1,9 @@
+html, body {
+    margin:0 auto;
+    background-color: black;
+}
+#stevegame {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
