@@ -5,9 +5,15 @@ class gmload extends Phaser.State {
 
     preload() {
         this.load.image('hs','imgs/menu/hs.png');
-        this.load.image('iconsmine','imgs/objects/iconsminecraft.jpg');
-        this.load.image('ground','imgs/objects/ground.png');
-        this.load.image('background','imgs/objects/background.png');
+        this.load.image('ground','imgs/objects/newground.png');
+
+        this.load.image('background','imgs/parallax/parallax.png');
+        this.load.image('backgroundc','imgs/parallax/parallaxc.png');
+        this.load.image('backgroundf','imgs/parallax/parallaxf.png');
+        this.load.image('backgroundm','imgs/parallax/parallaxm.png');
+
+        this.load.spritesheet('iconsmine','imgs/objects/iconsminecraft.jpg',32,32);
+        this.load.spritesheet('trees','imgs/objects/trees.png',48,48);
         this.load.spritesheet('heart','imgs/objects/heart.png',16,16);
         this.load.spritesheet('creeper','imgs/objects/creeper.png',32,32);
         this.load.spritesheet('steve','imgs/objects/steve.png',32,32);
@@ -45,7 +51,7 @@ class gm extends Phaser.State {
     }
 
     create(){
-        this.background = this.add.tileSprite(0,0,this.world.bounds.width,this.world.bounds.height,'background');
+        new parallax(this);
         this.hs = this.add.image(0,0,'hs');
         this.hs.smoothed = false;
         this.hs.height = this.camera.height;
@@ -63,8 +69,21 @@ class gg extends Phaser.State {
     preload() {}
     create() {
         stateconfig(this,8000);
+        this.Player = new steve(this.game,[500,this.game.world.centerY],'steve',0);
+        this.game.camera.follow(this.Player,Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+        this.game.camera.deadzone = new Phaser.Rectangle(70, 0, 120, 800);
+        this.world.add(this.Player);
+        
+        
+
     }
-    update() {}
+    update() {
+        this.parallax.reflesh(); 
+        this.game.physics.arcade.collide(this.ground, this.Player);
+    }
+    render() {
+        //this.game.debug.body(this.ground);
+    }
 }
 
 class gf extends Phaser.State {
