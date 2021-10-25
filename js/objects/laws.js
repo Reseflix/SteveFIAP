@@ -1,6 +1,35 @@
 // Steve and Creeper laws
-function personslogic() {
-    
+function personslogic(person) {
+    person.smoothed = false;
+    person.scale.setTo(5,5);
+    person.game.physics.enable(person, Phaser.Physics.ARCADE);
+    person.body.collideWorldBounds = true;
+    person.body.bounce.set(0.2);
+    person.anchor.setTo(0.5,0.5);
+    person.body.gravity.set(0, 300);
+    person.body.velocity.x = 0;
+    person.body.velocity.y = 20;
+}
+
+class collidelogic {
+    constructor(state) {
+        this.state = state;
+        this.game = this.state.game;
+        this.state.plaen = this.game.add.group();
+        this.state.creepergroup = this.state.game.add.group();
+        this.state.itensgroup = this.state.game.add.group(); 
+        
+    }
+    reflesh() {
+        this.game.physics.arcade.overlap(this.state.creepergroup, this.state.plaen, placre, null, this.state);
+        this.game.physics.arcade.overlap(this.state.itensgroup, this.state.plaen, plafru, null, this.state);
+        this.game.physics.arcade.collide(this.state.ground, this.state.plaen);
+        this.game.physics.arcade.collide(this.state.ground, this.state.creepergroup);
+        this.game.physics.arcade.collide(this.state.ground, this.state.itensgroup);
+        this.game.physics.arcade.collide(this.state.creepergroup, this.state.creepergroup);
+        this.game.physics.arcade.collide(this.state.plaen, this.state.creepergroup);
+        
+    }
 }
 // states
 function stateconfig(state,widthstate = 8000){
@@ -12,24 +41,10 @@ function stateconfig(state,widthstate = 8000){
     state.world.setBounds(0,0,widthstate,state.camera.height);
     state.height = state.camera.height;
     state.width = state.camera.width;
-    // Background and Ground
+    // Background, Ground, building and trees. 
     state.parallax = new parallax(state);
-    state.trees = [];
-    let treex = 100;
-    for (i=0;i <=20;i++) {
-        state.trees[i] = state.add.sprite(treex,175,'trees',Math.floor(Math.random() * 4));
-        if (1 <= Math.floor(Math.random() * 4)) {
-            state.trees[i].scale.setTo(-8,8);
-            emitter = state.game.add.emitter(treex,-10,Math.floor(Math.random() * 4)+1);
-            emitter.makeParticles('iconsmine',[53,54,55,56,155][Math.floor(Math.random() * 5)]);
-            emitter.start(false,Math.floor(Math.random() * 1000)+6000,80);
-        } else {
-            state.trees[i].scale.setTo(8,8);
-        }
+    trees(state,50);
 
-        state.trees[i].smoothed = false;
-        treex += Math.floor(Math.random() * 800);
-    }
     state.ground = state.add.tileSprite(0,475,widthstate*2,0, 'ground');
     state.ground.scale.setTo(0.5,0.5);
     state.game.physics.arcade.enable(state.ground);    
@@ -54,7 +69,39 @@ class parallax {
         this.background['backgroundc'].x = this.state.camera.x * .5;
     }
 }
+
+function trees(state,amount){
+    let treex = 100;
+    state.trees = [];
+    for (var i=0;i <= amount;i++){
+        let rand = Math.floor(Math.random() * 4);
+        if(1 <= rand){
+            emitter = state.game.add.emitter(treex,-10,Math.floor(Math.random() * 4)+1);
+            emitter.makeParticles('iconsmine',[53,54,55,56,155][Math.floor(Math.random() * 5)]);
+            emitter.start(false,Math.floor(Math.random() * 1000)+6000,80); 
+
+            state.trees[i] = state.add.sprite(treex,-20,'trees',Math.floor(Math.random() * 4));
+            if (1 == Math.floor(Math.random() * 4)) {
+                state.trees[i].scale.setTo(-12,12);
+            } else {
+                state.trees[i].scale.setTo(12,12);
+            }
+            
+        } else {
+            state.trees[i] = state.add.sprite(treex,175,'trees',Math.floor(Math.random() * 4));
+            if (1 == Math.floor(Math.random() * 4)) {
+                state.trees[i].scale.setTo(-8,8);
+            } else {
+                state.trees[i].scale.setTo(8,8);
+            }
+        }
+        state.trees[i].smoothed = false;
+
+        treex += Math.floor(Math.random() * 800);
+    }
+}
 //coalisions
+
 function placre(creeperobject,playerobject){
     if((playerobject.body.touching.down && creeperobject.body.touching.up) && playerobject.y < creeperobject.y){
         creeperobject.destroy();
@@ -63,13 +110,14 @@ function placre(creeperobject,playerobject){
         playerobject.healty++;
         creeperobject.destroy();
         points -= 5;
+        playerobject.damage();
     }
 }
 
 function plafru(fruitobject,playerobject){
     fruitobject.destroy();
     points += 1;
-    if (playerobject.healty > 1 && dificuldade == "e"){
+    if (playerobject.healty > 2 && difficulty == 'e'){
         playerobject.healty--;
     }
 }
@@ -87,4 +135,6 @@ function placha(chaveobject,playerobject){
     statusGame = 210;
     chaveobject.destroy();
 }
+
+
 

@@ -19,9 +19,14 @@ class gmload extends Phaser.State {
         this.load.spritesheet('steve','imgs/objects/steve.png',32,32);
         this.load.spritesheet('buttons','imgs/menu/buttons.png',30,10);
         this.load.spritesheet('help','imgs/menu/help.png',512,512);
+
+        this.load.audio('hurt','songs/hurt.mp3');
+        this.load.audio('hit','songs/hit.mp3');
+        this.load.audio('footsteps','songs/footsteps.mp3');
+        this.load.audio('theme','songs/theme.mp3');
     }
     update() {
-        this.game.state.start('gm');
+        this.game.state.start('gg');
     }
 }
 
@@ -29,6 +34,7 @@ class gm extends Phaser.State {
     constructor() {
         super();
         this.buttons = {};
+        var points = 0;
     }
 
     buttonConfig() {
@@ -66,23 +72,46 @@ class gg extends Phaser.State {
     constructor(){
         super();
     }
+    heart(){
+        this.cora =  this.game.add.sprite(600,50,'heart',3)
+        this.cora.animations.add('ccidle',[0,1,2,3],1,true);
+        this.cora.fixedToCamera = true;
+        this.cora.scale.setTo(5,5); 
+        this.cora.smoothed = false;
+    }
+
     preload() {}
     create() {
-        stateconfig(this,8000);
-        this.Player = new steve(this.game,[500,this.game.world.centerY],'steve',0);
-        this.game.camera.follow(this.Player,Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+        stateconfig(this,20000);
+        this.steve = new steve(this.game,[500,this.game.world.centerY],'steve',0);
+        this.game.camera.follow(this.steve,Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
         this.game.camera.deadzone = new Phaser.Rectangle(70, 0, 120, 800);
-        this.world.add(this.Player);
-        
-        
+        this.world.add(this.steve);
+        this.cl = new collidelogic(this);
+        this.plaen.add(this.steve);
+        this.mancre = new managercreeper(this,30);
+        this.itens = new manageritens(this,20);
+        this.heart();
 
+        this.textpoint = this.game.add.text(10, 30, "Pontos: 20", style);
+        this.textpoint.fixedToCamera = true;
+        //this.game.time.events.loop(200,function(){console.log('2')}, this);
+        
+        this.theme = this.game.add.audio('theme');
+        this.theme.play();
     }
     update() {
+        this.textpoint.text = "Pontos: " + points;
+        this.cora.frame = this.steve.healty;
         this.parallax.reflesh(); 
-        this.game.physics.arcade.collide(this.ground, this.Player);
+        this.cl.reflesh();
+        if (this.steve.healty >= 4) {
+            this.mancre.delet();
+            this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('gm');}, this);
+        }   
     }
     render() {
-        //this.game.debug.body(this.ground);
+        //this.game.debug.body(this.itens.itenlist[0]);
     }
 }
 

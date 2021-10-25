@@ -3,20 +3,24 @@ class steve extends Phaser.Sprite {
     constructor(game,xy,key,frame) {
         super(game,xy[0],xy[1],key,frame);
         this.animat();
-        this.smoothed = false;
-        this.scale.setTo(5,5);
-        this.game.physics.enable(this, Phaser.Physics.ARCADE);
-        this.body.collideWorldBounds = true;
+        personslogic(this);
         this.body.setSize(17, 15, 7, 15);
-        this.body.bounce.set(0.2);
-        this.anchor.setTo(0.5,0.5);
-        this.body.gravity.set(0, 300);
-        this.body.velocity.x = 0;
-        this.body.velocity.y = 20;
         this.keyss = game.input.keyboard.createCursorKeys();
         this.healty = 0;
         this.st = true;
+        this.hurt = this.game.add.audio('hurt');
+        this.foot = this.game.add.audio('footsteps');
+        //this.tint = 0xFF0000;
 
+    }
+    
+    damage(){
+        var orig = this.tint;
+        this.hurt.play();
+        //this.tint = 0xFF0000;
+        this.game.time.events.add(Phaser.Timer.SECOND * 0.2, function(){this.tint = 0xFF0000}, this);
+        this.game.time.events.add(Phaser.Timer.SECOND * 0.4, function(){this.tint = orig}, this);
+        
     }
 
     animat() {
@@ -61,20 +65,53 @@ class steve extends Phaser.Sprite {
 }
 
 class creeper extends Phaser.Sprite {
-    constructor() {
-
+    constructor(game,xy,key,frame) {
+        super(game,xy[0],xy[1],key,frame);
+        this.animat();
+        personslogic(this);
+        this.xy = xy;
+        this.body.setSize(11, 20, 11, 11);
+        this.speed = Math.floor(Math.random() * {'e':250,'n':400}[difficulty]);
+        if (this.speed < 200) {
+            this.speed = 200;
+        }
+        this.body.velocity.x = this.speed;
     }
-    create() {
 
+    animat(){
+        this.animations.add('idle',[0],10,true);
     }
+
     update() {
-        
+        if ((this.xy[0] > this.x + 500 && this.xy[0] > this.x) || this.body.touching.left){
+            this.body.velocity.x = this.speed;
+            this.scale.setTo(5,5);
+
+        } else if ((this.xy[0] < this.x - 500 && this.xy[0] < this.x) || this.body.touching.right) { 
+            this.body.velocity.x = -this.speed;
+            this.scale.setTo(-5,5);
+        }     
+        if (this.body.velocity.x > -190 && this.body.velocity.x < 190) {
+            this.body.velocity.x = -this.speed;
+            this.scale.setTo(-5,5);
+        }  
     }
 }
 
 class itens extends Phaser.Sprite {
-    constructor() {
+    constructor(game,xy,key,frame) {
+        super(game,xy[0],xy[1],key,frame);
+        this.xy = xy;
 
+        this.smoothed = false;
+        this.scale.setTo(1.5,1.5);
+        this.game.physics.enable(this, Phaser.Physics.ARCADE);
+        this.body.collideWorldBounds = true;
+        this.body.bounce.set(0.2);
+        this.anchor.setTo(0.5,0.5);
+        this.body.gravity.set(0, 300);
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 20;
     }
     create() {
 
@@ -85,9 +122,48 @@ class itens extends Phaser.Sprite {
 }
 // manager of this objects
 class managercreeper {
-    constructor(){}
+    constructor(state,amount){
+        this.amount = amount;
+        this.state = state;
+        this.creeperlist = [];
+        this.posirand();
+    }
+    posirand(){
+        let x = 100;
+        for (let i=0;i <= this.amount;i++){
+            x +=  Math.floor(Math.random() * 800)+600;
+            this.creeperlist.push(new creeper(this.state.game,[x,200],'creeper',0));
+            this.state.world.add(this.creeperlist[i]);
+            this.state.creepergroup.add(this.creeperlist[i]);
+            if (x > this.state.world.bounds.width-1000){
+                x = 800;
+            }
+        }
+    }
+    delet(){
+        for(let cr in this.creeperlist) {
+            this.creeperlist[cr].destroy();
+        }
+    }
 }
 
 class manageritens {
-    constructor(){}
+    constructor(state,amount){
+        this.amount = amount;
+        this.state = state;
+        this.itenlist = [];
+        this.posirand();
+    }
+    posirand(){
+        let x = 100;
+        for (let i=0;i <= this.amount;i++){
+            x +=  Math.floor(Math.random() * 800)+600;
+            this.itenlist.push(new itens(this.state.game,[x,200],'iconsmine',[21,22,23,24,25,26,27,29,30,31,38,39,41,43,45,47][Math.floor(Math.random() * 16)]));
+            this.state.world.add(this.itenlist[i]);
+            this.state.itensgroup.add(this.itenlist[i]);
+            if (x > 7000){
+                x = 800;
+            }
+        }
+    }
 }
