@@ -79,7 +79,9 @@ class creeper extends Phaser.Sprite {
     }
 
     animat(){
-        this.animations.add('idle',[0],10,true);
+        this.animations.add('idle',[0,1,2,3],10,true);
+        this.animations.play('idle');
+        this.animations.delay = 500;
     }
 
     update() {
