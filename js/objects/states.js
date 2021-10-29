@@ -47,7 +47,7 @@ class gm extends Phaser.State {
         this.buttonsGroup = this.game.add.group();
         this.buttons["Menu"] = this.add.button(this.game.width/2+100,this.world.centerY+50,'buttons',function(){this.video();},this,0,0,0);
         this.buttons["difficulty"] = this.add.button(this.game.width/2+100,this.world.centerY+100,'buttons',function(){if (difficulty == 'n'){difficulty = 'e'; this.buttons["difficulty"].setFrames(1,1,1)} else {difficulty = 'n'; this.buttons["difficulty"].setFrames(2,2,2)}},this,2,2,2);
-        this.buttons["Help"] = this.add.button(this.game.width - 50,100,'help',function(){this.video();},this,0,0,0);
+        this.buttons["Help"] = this.add.button(this.game.width - 50,100,'help',function(){window.location.href = "indexpage.html";},this,0,0,0);
 
         for (var button in this.buttons) {
             this.buttons[button].scale.setTo(5, 5);
@@ -132,6 +132,10 @@ class gg extends Phaser.State {
         this.textpoint = this.game.add.text(10, 30, "Pontos: 20", style);
         this.textpoint.fixedToCamera = true;
 
+        this.texttime = this.game.add.text(10, 70, "", style);
+        this.texttime.fixedToCamera = true;
+        this.texttime.fontSize = 20;
+
         this.textgameover = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "", style);
         this.textgameover.fixedToCamera = true;
 
@@ -142,6 +146,7 @@ class gg extends Phaser.State {
     }
     update() {
         this.textpoint.text = "Pontos: " + points;
+        this.texttime.text = "Segundos: " + timeend +"/ limite:420";
         this.cora.frame = this.steve.healty;
         this.parallax.reflesh(); 
         this.cl.reflesh();
@@ -198,6 +203,10 @@ class ggtwo extends Phaser.State {
 
         this.textgameover = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "", style);
         this.textgameover.fixedToCamera = true;
+        this.texttime.fontSize = 20;
+        
+        this.texttime = this.game.add.text(10, 70, "", style);
+        this.texttime.fixedToCamera = true;
 
         this.game.time.events.loop(Phaser.Timer.SECOND * 20,function(){console.log(timeend)}, this);
         this.game.time.events.loop(Phaser.Timer.SECOND,function(){timeend += 1}, this);
@@ -205,6 +214,7 @@ class ggtwo extends Phaser.State {
     }
     update() {
         this.textpoint.text = "Pontos: " + points;
+        this.texttime.text = "Segundos: " + timeend +"/ limite:420";
         this.cora.frame = this.steve.healty;
         this.parallax.reflesh(); 
         this.cl.reflesh();
