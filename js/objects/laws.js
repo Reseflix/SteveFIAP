@@ -35,7 +35,7 @@ class collidelogic {
     }
 }
 // states
-function stateconfig(state,widthstate = 8000,treesamount=50){
+function stateconfig(state,widthstate = 8000,treesamount=50,color){
     // Logic
     state.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
     state.game.scale.pageAlignHorizontally = true;	
@@ -44,8 +44,9 @@ function stateconfig(state,widthstate = 8000,treesamount=50){
     state.world.setBounds(0,0,widthstate,state.camera.height);
     state.height = state.camera.height;
     state.width = state.camera.width;
-    // Background, Ground, building and trees. 
-    state.parallax = new parallax(state);
+    // Background, Ground, building and trees.
+    console.log("sd",color); 
+    state.parallax = new parallax(state,color);
     trees(state,treesamount);
 
     state.ground = state.add.tileSprite(0,475,widthstate*2,0, 'ground');
@@ -58,10 +59,23 @@ function stateconfig(state,widthstate = 8000,treesamount=50){
 }
 
 class parallax {
-    constructor(state){
+    constructor(state,color = 0){
+        console.log(color);
         this.state = state;
         let xw = state.world.bounds.width,xh = state.world.bounds.height;
-        this.background = {'background':state.add.tileSprite(0,0,xw,xh,'background'),'backgroundf':state.add.tileSprite(0,0,xw,xh,'backgroundf'),'backgroundm':state.add.tileSprite(0,0,xw,xh,'backgroundm'),'backgroundc':state.add.tileSprite(0,0,xw,xh,'backgroundc')}
+        this.color = [{
+            background:'background',
+            backgroundf:'backgroundf',
+            backgroundc:'backgroundc',
+            backgroundm:'backgroundm'
+        },{
+            background:'backgroundred',
+            backgroundf:'backgroundredf',
+            backgroundc:'backgroundredc',
+            backgroundm:'backgroundredm'
+        }][color];
+
+        this.background = {'background':state.add.tileSprite(0,0,xw,xh,this.color['background']),'backgroundf':state.add.tileSprite(0,0,xw,xh,this.color['backgroundf']),'backgroundm':state.add.tileSprite(0,0,xw,xh,this.color['backgroundm']),'backgroundc':state.add.tileSprite(0,0,xw,xh,this.color['backgroundc'])}
         for (let backgr in this.background) {
             this.background[backgr].scale.setTo(2,2);
         }

@@ -11,6 +11,11 @@ class gmload extends Phaser.State {
         this.load.image('backgroundf','imgs/parallax/parallaxf.png');
         this.load.image('backgroundm','imgs/parallax/parallaxm.png');
 
+        this.load.image('backgroundred','imgs/parallax/parallaxred.png');
+        this.load.image('backgroundredc','imgs/parallax/parallaxredc.png');
+        this.load.image('backgroundredf','imgs/parallax/parallaxredf.png');
+        this.load.image('backgroundredm','imgs/parallax/parallaxredm.png');
+
         this.load.video('videomenu','imgs/menu/menu.mp4');
 
         this.load.spritesheet('iconsmine','imgs/objects/iconsminecraft.jpg',32,32);
@@ -112,14 +117,71 @@ class gg extends Phaser.State {
     preload() {}
 
     create() {
-        stateconfig(this,20000);
+        stateconfig(this,10000,undefined,0);
         this.steve = new steve(this.game,[500,this.game.world.centerY],'steve',0);
         this.game.camera.follow(this.steve,Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
         this.game.camera.deadzone = new Phaser.Rectangle(70, 0, 120, 800);
         this.world.add(this.steve);
         this.cl = new collidelogic(this);
         this.plaen.add(this.steve);
-        this.mancre = new managercreeper(this,30);
+        this.mancre = new managercreeper(this,15);
+        this.itens = new manageritens(this,20);
+        this.heart();
+
+        this.textpoint = this.game.add.text(10, 30, "Pontos: 20", style);
+        this.textpoint.fixedToCamera = true;
+        //this.game.time.events.loop(200,function(){console.log('2')}, this);
+
+        this.textgameover = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "", style);
+        this.textgameover.fixedToCamera = true;
+        
+    }
+    update() {
+        this.textpoint.text = "Pontos: " + points;
+        this.cora.frame = this.steve.healty;
+        this.parallax.reflesh(); 
+        this.cl.reflesh();
+        if (this.steve.healty >= 4) {
+            this.mancre.delet();
+            this.gameover();
+        }   
+        if (this.world.bounds.width-500 < this.steve.x) {
+            this.game.state.start('ggtwo');
+        }
+    }
+    render() {
+        //this.game.debug.body(this.itens.itenlist[0]);
+    }
+}
+
+class ggtwo extends Phaser.State {
+    constructor(){
+        super();
+    }
+    heart(){
+        this.cora =  this.game.add.sprite(600,50,'heart',3)
+        this.cora.animations.add('ccidle',[0,1,2,3],1,true);
+        this.cora.fixedToCamera = true;
+        this.cora.scale.setTo(5,5); 
+        this.cora.smoothed = false;
+    }
+
+    gameover() {
+        this.textgameover.text = "Reiniciando...";
+        this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('ggtwo');}, this);
+    }
+
+    preload() {}
+
+    create() {
+        stateconfig(this,10000,undefined,1);
+        this.steve = new steve(this.game,[500,this.game.world.centerY],'steve',0);
+        this.game.camera.follow(this.steve,Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
+        this.game.camera.deadzone = new Phaser.Rectangle(70, 0, 120, 800);
+        this.world.add(this.steve);
+        this.cl = new collidelogic(this);
+        this.plaen.add(this.steve);
+        this.mancre = new managercreeper(this,25);
         this.itens = new manageritens(this,20);
         this.heart();
 
