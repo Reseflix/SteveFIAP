@@ -106,7 +106,6 @@ class gg extends Phaser.State {
     gameover() {
         this.textgameover.text = "Fim de jogo...";
         this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('gm');}, this);
-        this.theme.pause();
     }
 
     preload() {}
