@@ -18,21 +18,24 @@ class collidelogic {
         this.state.plaen = this.game.add.group();
         this.state.creepergroup = this.state.game.add.group();
         this.state.itensgroup = this.state.game.add.group(); 
+        this.state.endgroup = this.state.game.add.group(); 
         
     }
     reflesh() {
         this.game.physics.arcade.overlap(this.state.creepergroup, this.state.plaen, placre, null, this.state);
         this.game.physics.arcade.overlap(this.state.itensgroup, this.state.plaen, plafru, null, this.state);
+        this.game.physics.arcade.overlap(this.state.endgroup, this.state.plaen, endinggroup, null, this.state);
         this.game.physics.arcade.collide(this.state.ground, this.state.plaen);
         this.game.physics.arcade.collide(this.state.ground, this.state.creepergroup);
         this.game.physics.arcade.collide(this.state.ground, this.state.itensgroup);
+        this.game.physics.arcade.collide(this.state.ground, this.state.endgroup);
         this.game.physics.arcade.collide(this.state.creepergroup, this.state.creepergroup);
         this.game.physics.arcade.collide(this.state.plaen, this.state.creepergroup);
         
     }
 }
 // states
-function stateconfig(state,widthstate = 8000){
+function stateconfig(state,widthstate = 8000,treesamount=50){
     // Logic
     state.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
     state.game.scale.pageAlignHorizontally = true;	
@@ -43,7 +46,7 @@ function stateconfig(state,widthstate = 8000){
     state.width = state.camera.width;
     // Background, Ground, building and trees. 
     state.parallax = new parallax(state);
-    trees(state,50);
+    trees(state,treesamount);
 
     state.ground = state.add.tileSprite(0,475,widthstate*2,0, 'ground');
     state.ground.scale.setTo(0.5,0.5);
@@ -71,7 +74,7 @@ class parallax {
 }
 
 function trees(state,amount){
-    let treex = 100;
+    let treex = 200;
     state.trees = [];
     for (var i=0;i <= amount;i++){
         let rand = Math.floor(Math.random() * 4);
@@ -122,19 +125,14 @@ function plafru(fruitobject,playerobject){
     }
 }
 
-function pladia(diaobject,playerobject){
-    diaobject.destroy();
-    statusGame = 100;
+function endinggroup(endobject,playerobject){
+    if(endobject.name == 'diaheart') {
+        playerobject.st = true;
+        endobject.destroy();
+    } else if(endobject.name == 'key'){
+        playerobject.end = true;
+        endobject.destroy();
+        playerobject.st = false;
+    }
 }
-
-function ghadia(diaobject,ghastobject) {
-    diaobject.destroy();
-}
-
-function placha(chaveobject,playerobject){
-    statusGame = 210;
-    chaveobject.destroy();
-}
-
-
 

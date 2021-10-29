@@ -122,6 +122,32 @@ class itens extends Phaser.Sprite {
         
     }
 }
+
+class ghast extends Phaser.Sprite {
+    constructor(game, xy, key, frame) {
+        super(game, xy[0],xy[1], key, frame);
+        this.smoothed = false;
+        this.scale.setTo(-4,4);
+        this.game.physics.enable(this, Phaser.Physics.ARCADE);
+        this.body.collideWorldBounds = true;
+        this.body.setSize(16, 16, 8, 16);
+        this.anchor.setTo(0.5,0.5);
+        this.body.velocity.x = 0;
+        this.body.velocity.y = 20;
+        this.animations.add('flutuando',[0,1,2,3],10,true);
+        this.statu = true;
+    }
+   
+    update() {
+        this.animations.play('flutuando'); //dança creu
+        if(this.x > 200){
+            this.body.velocity.x = -100;
+        }else if(this.statu){
+            this.body.velocity.x = 0;
+        }
+    }
+
+}
 // manager of this objects
 class managercreeper {
     constructor(state,amount){
