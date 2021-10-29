@@ -77,6 +77,7 @@ class gm extends Phaser.State {
         this.intro = this.game.add.video('videomenu'); 
         this.theme = this.game.add.audio('theme');
         this.theme.play();
+        this.intro.currentTime = 0;
     }
 
     update(){
@@ -193,7 +194,7 @@ class gf extends Phaser.State {
         if (this.steve.end && this.rpend) {
             // fim do jogo
             this.rpend = false;
-            this.textpoint = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "parabens!", style);
+            this.textpoint = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "Parabens!", style);
             this.textpoint.fixedToCamera = true;
             this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('gm');}, this);
         }
