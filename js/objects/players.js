@@ -42,7 +42,7 @@ class steve extends Phaser.Sprite {
         if(this.healty < 4 && this.st) {
             if (this.keyss.up.isDown && (this.body.touching.down || this.body.blocked.down)) {
                 this.movimentacao["pulando"]();
-                this.body.velocity.y = -300;
+                this.body.velocity.y = -450;
             } else if (this.keyss.left.isDown) {
                 this.movimentacao["movendo"]();
                 this.body.velocity.x = -380;

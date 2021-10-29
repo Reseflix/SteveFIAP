@@ -6,7 +6,7 @@ function personslogic(person) {
     person.body.collideWorldBounds = true;
     person.body.bounce.set(0.2);
     person.anchor.setTo(0.5,0.5);
-    person.body.gravity.set(0, 300);
+    person.body.gravity.set(0, 600);
     person.body.velocity.x = 0;
     person.body.velocity.y = 20;
 }
