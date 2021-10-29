@@ -44,8 +44,7 @@ function stateconfig(state,widthstate = 8000,treesamount=50,color){
     state.world.setBounds(0,0,widthstate,state.camera.height);
     state.height = state.camera.height;
     state.width = state.camera.width;
-    // Background, Ground, building and trees.
-    console.log("sd",color); 
+    // Background, Ground, building and trees. 
     state.parallax = new parallax(state,color);
     trees(state,treesamount);
 
@@ -60,7 +59,6 @@ function stateconfig(state,widthstate = 8000,treesamount=50,color){
 
 class parallax {
     constructor(state,color = 0){
-        console.log(color);
         this.state = state;
         let xw = state.world.bounds.width,xh = state.world.bounds.height;
         this.color = [{

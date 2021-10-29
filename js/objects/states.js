@@ -78,7 +78,8 @@ class gm extends Phaser.State {
         this.hs.width = this.camera.width;
         this.buttonConfig();
         points = 0;
-
+        timeend = 0;
+        
         this.intro = this.game.add.video('videomenu'); 
         this.theme = this.game.add.audio('theme');
         this.theme.play();
@@ -130,10 +131,13 @@ class gg extends Phaser.State {
 
         this.textpoint = this.game.add.text(10, 30, "Pontos: 20", style);
         this.textpoint.fixedToCamera = true;
-        //this.game.time.events.loop(200,function(){console.log('2')}, this);
 
         this.textgameover = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "", style);
         this.textgameover.fixedToCamera = true;
+
+        
+        this.game.time.events.loop(Phaser.Timer.SECOND * 20,function(){console.log(timeend)}, this);
+        this.game.time.events.loop(Phaser.Timer.SECOND,function(){timeend += 1}, this);
         
     }
     update() {
@@ -147,6 +151,9 @@ class gg extends Phaser.State {
         }   
         if (this.world.bounds.width-500 < this.steve.x) {
             this.game.state.start('ggtwo');
+        }
+        if (timeend >= 420) {
+            this.game.state.start('gf');
         }
     }
     render() {
@@ -191,6 +198,9 @@ class ggtwo extends Phaser.State {
 
         this.textgameover = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "", style);
         this.textgameover.fixedToCamera = true;
+
+        this.game.time.events.loop(Phaser.Timer.SECOND * 20,function(){console.log(timeend)}, this);
+        this.game.time.events.loop(Phaser.Timer.SECOND,function(){timeend += 1}, this);
         
     }
     update() {
@@ -203,6 +213,9 @@ class ggtwo extends Phaser.State {
             this.gameover();
         }   
         if (this.world.bounds.width-500 < this.steve.x) {
+            this.game.state.start('gf');
+        }
+        if (timeend >= 420) {
             this.game.state.start('gf');
         }
     }
