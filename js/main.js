@@ -11,3 +11,4 @@ var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", bou
 var difficulty = 'n'; // e = easy and n = normal
 var points = 0;
 var timeend = 0;
+var gato = false;

@@ -62,8 +62,9 @@ class gm extends Phaser.State {
     video(){
         this.theme.pause();
         this.theme.volume = 0; 
-        this.intro.onComplete.add(function(){this.game.state.start("gg");});
+        this.intro.onComplete.add(function(){gato = true});
         this.intro.play(false);
+        this.intro.addToWorld(0,0,0,0,0.45,0.58);
         this.textpoint = this.game.add.text(10, 30, "Clique para cima ou para Baixo para pular o video.", style);
     }
 
@@ -79,6 +80,7 @@ class gm extends Phaser.State {
         this.buttonConfig();
         points = 0;
         timeend = 0;
+        gato = false;
         
         this.intro = this.game.add.video('videomenu'); 
         this.theme = this.game.add.audio('theme');
@@ -93,6 +95,9 @@ class gm extends Phaser.State {
             } catch (e) {
             
             }
+            this.game.state.start("gg");
+        }
+        if (gato) {
             this.game.state.start("gg");
         }
     }
@@ -203,10 +208,10 @@ class ggtwo extends Phaser.State {
 
         this.textgameover = this.game.add.text(this.game.camera.centerX, this.game.camera.centerY, "", style);
         this.textgameover.fixedToCamera = true;
-        this.texttime.fontSize = 20;
         
         this.texttime = this.game.add.text(10, 70, "", style);
         this.texttime.fixedToCamera = true;
+        this.texttime.fontSize = 20;
 
         this.game.time.events.loop(Phaser.Timer.SECOND * 20,function(){console.log(timeend)}, this);
         this.game.time.events.loop(Phaser.Timer.SECOND,function(){timeend += 1}, this);
