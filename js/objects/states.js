@@ -62,8 +62,8 @@ class gm extends Phaser.State {
     video(){
         this.theme.pause();
         this.theme.volume = 0; 
+        this.intro.onComplete.add(function(){this.game.state.start("gg");});
         this.intro.play(false);
-        this.intro.addToWorld(0,0,0,0,1,1.4);
         this.textpoint = this.game.add.text(10, 30, "Clique para cima ou para Baixo para pular o video.", style);
     }
 
