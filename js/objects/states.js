@@ -117,7 +117,7 @@ class gg extends Phaser.State {
 
     gameover() {
         this.textgameover.text = "Fim de jogo...";
-        this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('gm');}, this);
+        this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('go');}, this);
     }
 
     preload() {}
@@ -184,8 +184,8 @@ class ggtwo extends Phaser.State {
     }
 
     gameover() {
-        this.textgameover.text = "Reiniciando...";
-        this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('ggtwo');}, this);
+        this.textgameover.text = "Fim de jogo...";
+        this.game.time.events.add(Phaser.Timer.SECOND * 4, function(){this.game.state.start('go');}, this);
     }
 
     preload() {}
@@ -295,4 +295,35 @@ class gf extends Phaser.State {
         //this.game.debug.spriteCorners(this.trees[0], true, true);
         //this.game.debug.body(this.trees[0]);
     }
+}
+class go extends Phaser.State {
+    constructor(){
+        super();
+        this.buttons = {};
+    }
+
+    buttonConfig() {
+        this.buttonsGroup = this.game.add.group();
+        this.buttons["Menu"] = this.add.button(this.game.width/2,this.world.centerY+100,'buttons',function(){this.game.state.start('gg');},this,0,0,0);
+        this.buttons["return"] = this.add.button(this.game.width/2,this.world.centerY+150,'buttons',function(){this.game.state.start('gm');},this,3,3,3);
+        //this.buttons["Help"] = this.add.button(this.game.width - 50,100,'help',function(){window.location.href = "indexpage.html";},this,0,0,0);
+
+        for (var button in this.buttons) {
+            this.buttons[button].scale.setTo(5, 5);
+            this.buttons[button].smoothed = false;
+            this.buttons[button].anchor.setTo(0.5,0.5);
+            this.buttonsGroup.add(this.buttons[button]);
+        }
+    }
+
+    preload() {}
+
+    create() {
+        this.buttonConfig();
+        this.textgameover = this.game.add.text(this.game.camera.centerX-200, this.game.camera.centerY, "Fim de jogo... Pontos: " + points, style);
+        this.textgameover.fixedToCamera = true;
+        console.log(this.textgameover);
+    }
+
+    update() {}
 }

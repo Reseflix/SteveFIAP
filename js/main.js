@@ -4,6 +4,7 @@ window.onload = function() {
     game.state.add('gg', gg);
     game.state.add('ggtwo', ggtwo);
     game.state.add('gf', gf);
+    game.state.add('go', go);
     game.state.add('gmload', gmload);
     game.state.start('gmload');
 }
