@@ -1,4 +1,5 @@
 # Sobre
+link para jogar: https://reseflix.github.io/SteveFIAP/
 > Projeto principal do primeiro ano da faculdade FIAP (Faculdade de Informática e Administração Paulista)
 > com o objetivo de desenvolver um jogo e um robo para apresentar as crianças hospitalizadas.
 # Ferramentas para o desenvolvimento do jogo
